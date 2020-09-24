@@ -289,7 +289,7 @@ class PrefixForm(BootstrapMixin, TenancyForm, CustomFieldModelForm):
     class Meta:
         model = Prefix
         fields = [
-            'prefix', 'vrf', 'site', 'vlan', 'status', 'role', 'is_pool', 'description', 'tenant_group', 'tenant',
+            'prefix', 'vrf', 'site', 'vlan', 'status', 'role', 'is_pool', 'is_utilized', 'description', 'tenant_group', 'tenant',
             'tags',
         ]
         widgets = {
@@ -407,6 +407,11 @@ class PrefixBulkEditForm(BootstrapMixin, AddRemoveTagsForm, CustomFieldBulkEditF
         widget=BulkEditNullBooleanSelect(),
         label='Is a pool'
     )
+    is_utilized = forms.NullBooleanField(
+        required=False,
+        widget=BulkEditNullBooleanSelect(),
+        label='Is fully utilized',
+    )
     description = forms.CharField(
         max_length=100,
         required=False
@@ -422,7 +427,7 @@ class PrefixFilterForm(BootstrapMixin, TenancyFilterForm, CustomFieldFilterForm)
     model = Prefix
     field_order = [
         'q', 'within_include', 'family', 'mask_length', 'vrf_id', 'status', 'region', 'site', 'role', 'tenant_group',
-        'tenant', 'is_pool', 'expand',
+        'tenant', 'is_pool', 'is_utilized', 'expand',
     ]
     mask_length__lte = forms.IntegerField(
         widget=forms.HiddenInput()
@@ -486,6 +491,13 @@ class PrefixFilterForm(BootstrapMixin, TenancyFilterForm, CustomFieldFilterForm)
     is_pool = forms.NullBooleanField(
         required=False,
         label='Is a pool',
+        widget=StaticSelect2(
+            choices=BOOLEAN_WITH_BLANK_CHOICES
+        )
+    )
+    is_utilized = forms.NullBooleanField(
+        required=False,
+        label='Is fully utilized',
         widget=StaticSelect2(
             choices=BOOLEAN_WITH_BLANK_CHOICES
         )

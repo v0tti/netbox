@@ -154,7 +154,7 @@ class PrefixSerializer(TaggedObjectSerializer, CustomFieldModelSerializer):
         model = Prefix
         fields = [
             'id', 'url', 'family', 'prefix', 'site', 'vrf', 'tenant', 'vlan', 'status', 'role', 'is_pool',
-            'description', 'tags', 'custom_fields', 'created', 'last_updated',
+            'is_utilized', 'description', 'tags', 'custom_fields', 'created', 'last_updated',
         ]
         read_only_fields = ['family']
 

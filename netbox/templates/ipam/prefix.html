@@ -182,6 +182,16 @@
                         </td>
                     </tr>
                     <tr>
+                        <td>Is utilized</td>
+                        <td>
+                            {% if prefix.is_utilized %}
+                                <i class="glyphicon glyphicon-ok text-success" title="Yes"></i>
+                            {% else %}
+                                <i class="glyphicon glyphicon-remove text-danger" title="No"></i>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Utilization</td>
                         <td>{% utilization_graph prefix.get_utilization %}</td>
                     </tr>

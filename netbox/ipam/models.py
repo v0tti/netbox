@@ -360,6 +360,11 @@ class Prefix(ChangeLoggedModel, CustomFieldModel):
         default=False,
         help_text='All IP addresses within this prefix are considered usable'
     )
+    is_utilized = models.BooleanField(
+        verbose_name='Is fully utilized',
+        default=False,
+        help_text='The utilization is shown as 100%'
+    )
     description = models.CharField(
         max_length=200,
         blank=True
@@ -374,10 +379,10 @@ class Prefix(ChangeLoggedModel, CustomFieldModel):
     objects = PrefixQuerySet.as_manager()
 
     csv_headers = [
-        'prefix', 'vrf', 'tenant', 'site', 'vlan_group', 'vlan', 'status', 'role', 'is_pool', 'description',
+        'prefix', 'vrf', 'tenant', 'site', 'vlan_group', 'vlan', 'status', 'role', 'is_pool', 'is_utilized', 'description',
     ]
     clone_fields = [
-        'site', 'vrf', 'tenant', 'vlan', 'status', 'role', 'is_pool', 'description',
+        'site', 'vrf', 'tenant', 'vlan', 'status', 'role', 'is_pool', 'is_utilized', 'description',
     ]
 
     STATUS_CLASS_MAP = {
@@ -448,6 +453,7 @@ class Prefix(ChangeLoggedModel, CustomFieldModel):
             self.get_status_display(),
             self.role.name if self.role else None,
             self.is_pool,
+            self.is_utilized,
             self.description,
         )
 
