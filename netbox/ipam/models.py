@@ -559,6 +559,8 @@ class Prefix(ChangeLoggedModel, CustomFieldModel):
         Determine the utilization of the prefix and return it as a percentage. For Prefixes with a status of
         "container", calculate utilization based on child prefixes. For all others, count child IP addresses.
         """
+        if self.is_utilized:
+            return 100
         if self.status == PrefixStatusChoices.STATUS_CONTAINER:
             queryset = Prefix.objects.filter(
                 prefix__net_contained=str(self.prefix),
