@@ -502,6 +502,10 @@ class Prefix(ChangeLoggedModel, CustomFieldModel):
         """
         Return all available Prefixes within this prefix as an IPSet.
         """
+        # Return an empty set if marked as utilized
+        if self.is_utilized:
+            return netaddr.IPSet([])
+
         prefix = netaddr.IPSet(self.prefix)
         child_prefixes = netaddr.IPSet([child.prefix for child in self.get_child_prefixes()])
         available_prefixes = prefix - child_prefixes
@@ -512,6 +516,10 @@ class Prefix(ChangeLoggedModel, CustomFieldModel):
         """
         Return all available IPs within this prefix as an IPSet.
         """
+        # Return an empty set if marked as utilized
+        if self.is_utilized:
+            return netaddr.IPSet([])
+
         prefix = netaddr.IPSet(self.prefix)
         child_ips = netaddr.IPSet([ip.address.ip for ip in self.get_child_ips()])
         available_ips = prefix - child_ips
@@ -540,6 +548,10 @@ class Prefix(ChangeLoggedModel, CustomFieldModel):
         """
         Return the first available child prefix within the prefix (or None).
         """
+        # Return an None if marked as utilized
+        if self.is_utilized:
+            return None
+
         available_prefixes = self.get_available_prefixes()
         if not available_prefixes:
             return None
@@ -549,6 +561,10 @@ class Prefix(ChangeLoggedModel, CustomFieldModel):
         """
         Return the first available IP within the prefix (or None).
         """
+        # Return an None if marked as utilized
+        if self.is_utilized:
+            return None
+        
         available_ips = self.get_available_ips()
         if not available_ips:
             return None
